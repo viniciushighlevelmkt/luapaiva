@@ -16,7 +16,7 @@ const SITE = {
   email: "luapaiva022@gmail.com",
   years: "4",
   // Painel HLM: chave pública por site (vale só para luapaiva, só em /api/collect).
-  collect: { url: "https://hlm-painel.vercel.app/api/collect", slug: "luapaiva", key: "b4fd1f63ea2d72cfa16f4d6bcf88b5bce018b3c850833c18" },
+  collect: { url: "https://painel.highlevelmkt.com/api/collect", slug: "luapaiva", key: "b4fd1f63ea2d72cfa16f4d6bcf88b5bce018b3c850833c18" },
 };
 
 const wa = (msg) => `https://wa.me/${SITE.wa}?text=${encodeURIComponent(msg)}`;
