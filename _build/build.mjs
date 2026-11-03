@@ -49,8 +49,10 @@ const org = {
   telephone: SITE.phone,
   email: SITE.email,
   priceRange: "$$",
-  address: { "@type": "PostalAddress", addressLocality: "Cabo Frio", addressRegion: "RJ", addressCountry: "BR" },
+  // Sem morada pública (atende na área de serviço e a distância): só estado e país.
+  address: { "@type": "PostalAddress", addressRegion: "RJ", addressCountry: "BR" },
   areaServed: [
+    { "@type": "AdministrativeArea", name: "Região dos Lagos" },
     { "@type": "State", name: "Rio de Janeiro" },
     { "@type": "Country", name: "Brasil" },
   ],
