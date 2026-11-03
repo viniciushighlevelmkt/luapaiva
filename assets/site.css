@@ -841,3 +841,13 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--champagne); out
 #wa-float.tip .wa-text { opacity: 1; }
 @media (max-width: 768px) { #wa-float { padding: 0; } }
 @media (prefers-reduced-motion: reduce) { #wa-float { transition: none; } }
+
+/* ===================== COOKIES ===================== */
+.cookies { position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 250; max-width: 560px; background: var(--navy-light); border: 1px solid rgba(200,176,121,0.35); box-shadow: 0 8px 32px rgba(0,0,0,0.45); padding: 1.25rem 1.5rem; display: none; }
+.cookies.show { display: block; }
+.cookies p { font-size: 0.82rem; line-height: 1.7; color: var(--text-muted); font-weight: 300; margin-bottom: 1rem; }
+.cookies a { color: var(--champagne); }
+.cookies-actions { display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap; }
+.cookies-actions button { cursor: pointer; font-family: inherit; min-height: 44px; }
+.cookies-actions .btn-secondary { background: transparent; }
+.cookie-link { background: none; border: none; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }

@@ -15,6 +15,7 @@ const SITE = {
   wa: "5522997778942",
   email: "luapaiva022@gmail.com",
   years: "4",
+  ga4: "G-0G21LKRC6Z", // propriedade 562056022 (conta RISEUP, vnc.oliv)
   // Painel HLM: chave pública por site (vale só para luapaiva, só em /api/collect).
   collect: { url: "https://painel.highlevelmkt.com/api/collect", slug: "luapaiva", key: "b4fd1f63ea2d72cfa16f4d6bcf88b5bce018b3c850833c18" },
 };
@@ -97,6 +98,18 @@ function head(p) {
 
   <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": graph })}</script>
 
+  <!-- Google: Consent Mode v2 avançado (LGPD). Negado por defeito: sem aceite só vão pings sem cookies. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag("consent", "default", { ad_storage: "denied", analytics_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", wait_for_update: 500 });
+    gtag("set", "ads_data_redaction", true);
+    gtag("set", "url_passthrough", true);
+    try { if (localStorage.getItem("lp_consent") === "sim") gtag("consent", "update", { ad_storage: "granted", analytics_storage: "granted", ad_user_data: "granted", ad_personalization: "granted" }); } catch (e) {}
+    gtag("js", new Date());
+    gtag("config", "${SITE.ga4}");
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=${SITE.ga4}"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
@@ -154,10 +167,18 @@ ${REGIONS.map((s) => `          <li><a href="${s.path}">${s.title}</a></li>`).jo
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 ${SITE.name}. Todos os direitos reservados. · <a href="/privacidade/" style="color:inherit">Privacidade</a></p>
+      <p>© 2026 ${SITE.name}. Todos os direitos reservados. · <a href="/privacidade/" style="color:inherit">Privacidade</a> · <button type="button" class="cookie-link" data-cookie-prefs>Preferências de cookies</button></p>
       <p>Região dos Lagos, RJ · Atendimento em todo o Brasil · ${SITE.phoneLabel}</p>
     </div>
   </footer>
+
+  <div id="cookies" class="cookies" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
+    <p>Usamos cookies de estatística (Google Analytics) para saber quais páginas ajudam os clientes. Você pode aceitar ou recusar. <a href="/privacidade/">Saiba mais</a></p>
+    <div class="cookies-actions">
+      <button type="button" id="cookiesRecusar" class="btn-secondary">Recusar</button>
+      <button type="button" id="cookiesAceitar" class="btn-primary">Aceitar</button>
+    </div>
+  </div>
 
   <a id="wa-float" href="${wa("Olá, Luã! Vim pelo site e gostaria de uma assessoria náutica.")}" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" data-cta="float">
     <svg class="wa-icon" fill="none" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -817,12 +838,14 @@ const PAGES = [
     crumbs: [{ name: "Privacidade", path: "/privacidade/" }],
     eyebrow: "LGPD",
     h1: "Política de privacidade",
-    lead: "Este site não usa cookies de publicidade nem guarda dados pessoais.",
+    lead: "Este site não usa cookies de publicidade. Cookies de estatística só com a sua autorização.",
     waMsg: "Olá, Luã! Tenho uma dúvida sobre privacidade.",
     noindex: true,
     body: `
           <h2>Contatos</h2>
           <p>Quando você clica num botão de WhatsApp, telefone ou e-mail, ou usa o formulário, a conversa acontece diretamente no WhatsApp, no telefone ou no e-mail. O formulário não envia nada para servidores: só abre o WhatsApp com a mensagem pronta. Os dados que você envia por esses canais são usados apenas para responder ao seu pedido e prestar o serviço.</p>
+          <h2>Cookies e Google Analytics</h2>
+          <p>Com a sua autorização (botão «Aceitar» do aviso de cookies), usamos o Google Analytics para medir visitas e cliques nos botões de contato. Sem autorização, o Google recebe apenas sinais sem cookies e sem identificadores. Você pode mudar a sua escolha a qualquer momento em «Preferências de cookies», no rodapé. Os dados do Google Analytics são guardados pelo Google por até 14 meses.</p>
           <h2>Estatísticas de uso</h2>
           <p>Contamos de forma anônima as páginas vistas e os cliques nos botões de contato (tipo de contato, página e origem geral da visita, como pesquisa no Google ou acesso direto), para saber quais páginas ajudam os clientes. Essa contagem não usa cookies, não guarda identificadores no seu aparelho e não inclui nome, telefone, e-mail ou o texto das mensagens. É feita pela High Level Marketing, que cuida do site.</p>
           <h2>Seus direitos</h2>

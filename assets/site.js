@@ -65,3 +65,43 @@
   }
   window.addEventListener("scroll", on, { passive: true }); on();
 })();
+
+// Aviso de cookies (LGPD) — Consent Mode v2 avançado; o default negado está no <head>.
+(function () {
+  var KEY = "lp_consent", banner = document.getElementById("cookies"), saved = null;
+  function update(v) {
+    if (typeof gtag !== "function") return;
+    var g = v ? "granted" : "denied";
+    gtag("consent", "update", { ad_storage: g, analytics_storage: g, ad_user_data: g, ad_personalization: g });
+  }
+  function clearCookies() {
+    var names = ["_gcl_au", "_gcl_aw", "_gcl_dc", "_gcl_gb", "_gcl_gs", "_gcl_ag"];
+    document.cookie.split(";").forEach(function (c) { var n = c.split("=")[0].trim(); if (/^_ga(_|$)/.test(n)) names.push(n); });
+    var labels = location.hostname.split("."), domains = [""];
+    for (var i = 0; i < labels.length - 1; i++) { var d = labels.slice(i).join("."); domains.push("; domain=" + d, "; domain=." + d); }
+    names.forEach(function (n) { domains.forEach(function (d) { document.cookie = n + "=; Max-Age=0; path=/" + d; }); });
+    try { localStorage.removeItem("_gcl_ls"); localStorage.removeItem("hlm_first"); } catch (e) {}
+  }
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (!banner) return;
+  if (saved !== "sim" && saved !== "nao") {
+    // 1,5 s depois do LCP (tecto 4 s), para não ser o LCP nem tapar o hero
+    var shown = false, show = function () { if (!shown) { shown = true; banner.classList.add("show"); } };
+    var cap = setTimeout(show, 4000), t = 0;
+    try {
+      new PerformanceObserver(function (list) {
+        var e = list.getEntries(), last = e[e.length - 1]; if (!last) return;
+        clearTimeout(t); t = setTimeout(function () { clearTimeout(cap); show(); }, Math.max(0, last.startTime + 1500 - performance.now()));
+      }).observe({ type: "largest-contentful-paint", buffered: true });
+    } catch (e) { t = setTimeout(show, 1500); }
+  }
+  function choose(v) {
+    try { localStorage.setItem(KEY, v); } catch (e) {}
+    banner.classList.remove("show");
+    update(v === "sim");
+    if (v !== "sim") clearCookies();
+  }
+  document.getElementById("cookiesAceitar").addEventListener("click", function () { choose("sim"); });
+  document.getElementById("cookiesRecusar").addEventListener("click", function () { choose("nao"); });
+  document.querySelectorAll("[data-cookie-prefs]").forEach(function (b) { b.addEventListener("click", function () { banner.classList.add("show"); }); });
+})();
