@@ -880,4 +880,18 @@ Allow: /
 
 Sitemap: ${SITE.url}/sitemap.xml
 `);
-console.log(`${urls.length + 1} páginas, ${urls.length} no sitemap`);
+// llms.txt: resumo para assistentes de IA, gerado dos mesmos dados (sem factos novos).
+const llmsPages = PAGES.filter((p) => !p.noindex);
+writeFileSync(join(ROOT, "llms.txt"), `# ${SITE.name}
+
+> Despachante náutico com mais de ${SITE.years} anos de experiência. Base na Região dos Lagos (RJ), atendimento em todo o Brasil, também a distância. Atende de segunda a sexta, das 08:00 às 18:00.
+
+## Páginas
+${llmsPages.map((p) => `- [${strip(p.h1 || p.title)}](${SITE.url}${p.path}): ${p.description}`).join("\n")}
+
+## Contacto
+- WhatsApp e telefone: ${SITE.phoneLabel} (${SITE.phone})
+- E-mail: ${SITE.email}
+- Site: ${SITE.url}/
+`);
+console.log(`${urls.length + 1} páginas, ${urls.length} no sitemap, llms.txt`);
